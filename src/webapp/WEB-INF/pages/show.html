@@ -13,8 +13,8 @@
 <p th:text="${user.getEmail()}">data</p>
 <p th:text="${user.getYear()}">data</p>
 
-<a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit</a>
-<form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">
+<a th:href="@{/users/edit(id=${user.getId()})}">Edit</a>
+<form th:method="DELETE" th:action="@{/users(id=${user.getId()})}">
     <input type="submit" value="Delete">
 </form>
 </body>

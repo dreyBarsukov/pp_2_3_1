@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/users")
@@ -21,16 +23,14 @@ public class UserController {
     }
 
     @GetMapping()
-    public String index(Model model) {
-        model.addAttribute("users", userService.findAll());
-        return "index";
-    }
-
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userService.findOne(id));
-        System.out.println(userService.findOne(id));
-        return "show";
+    public String index(@RequestParam(value = "id", required = false) Long id, Model model) {
+        if (id == null) {
+            model.addAttribute("users", userService.findAll());
+            return "index";
+        } else {
+            model.addAttribute("user", userService.findOne(id));
+            return "show";
+        }
     }
 
     @GetMapping("/new")
@@ -44,20 +44,20 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("/{id}/edit")
-    public String edit(@PathVariable("id") long id, Model model) {
+    @GetMapping("/edit")
+    public String edit(@RequestParam(value = "id", required = false) Long id, Model model) {
         model.addAttribute("user", userService.findOne(id));
         return "edit";
     }
 
-    @PatchMapping("/{id}")
-    public String update(@PathVariable("id") long id, @ModelAttribute("user") User user) {
+    @PatchMapping()
+    public String update(@RequestParam(value = "id", required = false) Long id, @ModelAttribute("user") User user) {
         userService.update(id, user);
         return "redirect:/users";
     }
 
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") long id) {
+    @DeleteMapping()
+    public String delete(@RequestParam(value = "id", required = false) Long id) {
         userService.delete(id);
         return "redirect:/users";
     }
