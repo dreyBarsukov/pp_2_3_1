@@ -1,12 +1,8 @@
 package com.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "USER")
@@ -18,21 +14,27 @@ public class User {
     private Long id;
 
     @Column(name = "year")
-    private Long year;
+    @Min(value = 1900, message = "год не должен быть меньше 1900")
+    @NotNull(message = "введите год")
+    private Integer year;
 
-    @Column(name = "name")
+    @Column(name = "first_name")
+    @NotEmpty(message = "укажите имя")
     private String firstName;
 
     @Column(name = "last_name")
+    @NotEmpty(message = "укажите фамилию")
     private String lastName;
 
     @Column(name = "email")
+    @Email(message = "введенные данные не соответствуют email")
+    @NotEmpty(message = "укажите email")
     private String email;
 
     public User() {
     }
 
-    public User(Long year, String firstName, String lastName, String email) {
+    public User(Integer year, String firstName, String lastName, String email) {
         this.year = year;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -47,11 +49,11 @@ public class User {
         this.id = id;
     }
 
-    public Long getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(Long year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
